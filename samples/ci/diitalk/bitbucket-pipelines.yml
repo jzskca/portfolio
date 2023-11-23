@@ -1,0 +1,35 @@
+pipelines:
+  branches:
+    develop:
+      - step:
+          image: diitalk/pipelines:3
+          caches:
+            - composer-local
+            - npm-local
+          script:
+            - ci/setup.sh
+            - ci/run-tests.sh
+            - ci/update-images.sh
+          services:
+            - docker
+
+  custom:
+    ci:
+      - step:
+          image: diitalk/pipelines:3
+          caches:
+            - composer-local
+            - npm-local
+          script:
+            - ci/setup.sh
+            - ci/run-tests.sh
+          services:
+            - docker
+
+definitions:
+  caches:
+    composer-local: .composer
+    npm-local: .npm
+  services:
+    docker:
+      memory: 3072
